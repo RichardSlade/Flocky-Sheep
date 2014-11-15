@@ -1,0 +1,395 @@
+# depslib dependency file v1.0
+1415978920 source:/home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/controller.cpp
+	"Controller.hpp"
+
+1415656648 /home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/Controller.hpp
+	<array>
+	<memory>
+	<SFML/Graphics/RenderWindow.hpp>
+	<SFML/Graphics/Texture.hpp>
+	<SFML/System/Clock.hpp>
+	<SFML/System/Time.hpp>
+	<SFML/System/NonCopyable.hpp>
+	"World.hpp"
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Graphics/RenderWindow.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/RenderTarget.hpp>
+	<SFML/Graphics/Image.hpp>
+	<SFML/Window/Window.hpp>
+	<string>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Graphics/Export.hpp
+	<SFML/Config.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Config.hpp
+	"TargetConditionals.h"
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Graphics/RenderTarget.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Color.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/Graphics/View.hpp>
+	<SFML/Graphics/Transform.hpp>
+	<SFML/Graphics/BlendMode.hpp>
+	<SFML/Graphics/RenderStates.hpp>
+	<SFML/Graphics/PrimitiveType.hpp>
+	<SFML/Graphics/Vertex.hpp>
+	<SFML/System/NonCopyable.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Graphics/Color.hpp
+	<SFML/Graphics/Export.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Graphics/Rect.hpp
+	<SFML/System/Vector2.hpp>
+	<algorithm>
+	<SFML/Graphics/Rect.inl>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/System/Vector2.hpp
+	<SFML/System/Vector2.inl>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/System/Vector2.inl
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Graphics/Rect.inl
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Graphics/View.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/Graphics/Transform.hpp>
+	<SFML/System/Vector2.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Graphics/Transform.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/System/Vector2.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Graphics/BlendMode.hpp
+	<SFML/Graphics/Export.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Graphics/RenderStates.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/BlendMode.hpp>
+	<SFML/Graphics/Transform.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Graphics/PrimitiveType.hpp
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Graphics/Vertex.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Color.hpp>
+	<SFML/System/Vector2.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/System/NonCopyable.hpp
+	<SFML/System/Export.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/System/Export.hpp
+	<SFML/Config.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Graphics/Image.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Color.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<string>
+	<vector>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Window/Window.hpp
+	<SFML/Window/Export.hpp>
+	<SFML/Window/ContextSettings.hpp>
+	<SFML/Window/VideoMode.hpp>
+	<SFML/Window/WindowHandle.hpp>
+	<SFML/Window/WindowStyle.hpp>
+	<SFML/Window/GlResource.hpp>
+	<SFML/System/Clock.hpp>
+	<SFML/System/Vector2.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/System/String.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Window/Export.hpp
+	<SFML/Config.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Window/ContextSettings.hpp
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Window/VideoMode.hpp
+	<SFML/Window/Export.hpp>
+	<vector>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Window/WindowHandle.hpp
+	<SFML/Config.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Window/WindowStyle.hpp
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Window/GlResource.hpp
+	<SFML/Window/Export.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/System/Clock.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/Time.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/System/Time.hpp
+	<SFML/System/Export.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/System/String.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/Utf.hpp>
+	<locale>
+	<string>
+	<SFML/System/String.inl>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/System/Utf.hpp
+	<SFML/Config.hpp>
+	<algorithm>
+	<locale>
+	<string>
+	<cstdlib>
+	<SFML/System/Utf.inl>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/System/Utf.inl
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/System/String.inl
+
+1415659173 /home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/World.hpp
+	<memory>
+	<SFML/Graphics/RenderWindow.hpp>
+	<SFML/Graphics/Texture.hpp>
+	<SFML/Graphics/CircleShape.hpp>
+	<SFML/Graphics/Sprite.hpp>
+	<SFML/Graphics/Font.hpp>
+	<SFML/System/NonCopyable.hpp>
+	"Enum.hpp"
+	"Vehicle.hpp"
+	"StationaryTarget.hpp"
+	"Obstacle.hpp"
+	"SceneNode.hpp"
+
+1415318686 /home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/Enum.hpp
+
+1414698851 /home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/Behaviour.hpp
+
+1415658392 source:/home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/main.cpp
+	<ctime>
+	<exception>
+	<iostream>
+	"Controller.hpp"
+
+1416002360 source:/home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/world.cpp
+	<SFML/Graphics/PrimitiveType.hpp>
+	<SFML/Graphics/Text.hpp>
+	<SFML/Window/Event.hpp>
+	"World.hpp"
+	"Controller.hpp"
+	"SpriteNode.hpp"
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Window/Event.hpp
+	<SFML/Config.hpp>
+	<SFML/Window/Joystick.hpp>
+	<SFML/Window/Keyboard.hpp>
+	<SFML/Window/Mouse.hpp>
+	<SFML/Window/Sensor.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Window/Joystick.hpp
+	<SFML/Window/Export.hpp>
+	<SFML/System/String.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Window/Keyboard.hpp
+	<SFML/Window/Export.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Window/Mouse.hpp
+	<SFML/Window/Export.hpp>
+	<SFML/System/Vector2.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Window/Sensor.hpp
+	<SFML/Window/Export.hpp>
+	<SFML/System/Vector3.hpp>
+	<SFML/System/Time.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/System/Vector3.hpp
+	<SFML/System/Vector3.inl>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/System/Vector3.inl
+
+1415998071 /home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/SteeringBehaviour.hpp
+	<vector>
+	<SFML/Graphics/CircleShape.hpp>
+	<SFML/Graphics/VertexArray.hpp>
+	<SFML/System/Vector2.hpp>
+	<SFML/System/Time.hpp>
+	"Enum.hpp"
+
+1416002394 source:/home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/steeringBehaviour.cpp
+	<cmath>
+	<algorithm>
+	<iostream>
+	"SteeringBehaviour.hpp"
+	"Vehicle.hpp"
+	"Target.hpp"
+	"Utility.hpp"
+
+1415996549 /home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/Vehicle.hpp
+	<memory>
+	<SFML/Graphics/Sprite.hpp>
+	<SFML/Graphics/Texture.hpp>
+	<SFML/System/Time.hpp>
+	"MovingEntity.hpp"
+	"SteeringBehaviour.hpp"
+	"SceneNode.hpp"
+
+1415664393 /home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/MovingEntity.hpp
+	<SFML/System/Vector2.hpp>
+	"Target.hpp"
+	"SceneNode.hpp"
+
+1414709724 source:/home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/steeringController.cpp
+	"SteeringController.hpp"
+
+1414709718 /home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/SteeringController.hpp
+	<vector>
+	<SFML/System/Vector2.hpp>
+	"Enum.hpp"
+
+1416001740 source:/home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/vehicle.cpp
+	<iostream>
+	<cmath>
+	"Vehicle.hpp"
+	"Utility.hpp"
+	"World.hpp"
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Graphics/Sprite.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Drawable.hpp>
+	<SFML/Graphics/Transformable.hpp>
+	<SFML/Graphics/Vertex.hpp>
+	<SFML/Graphics/Rect.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Graphics/Drawable.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/RenderStates.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Graphics/Transformable.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Transform.hpp>
+
+1415998713 /home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/Utility.hpp
+	<SFML/System/Vector2.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Graphics/Texture.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Image.hpp>
+	<SFML/Window/GlResource.hpp>
+
+1415661629 /home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/Target.hpp
+	<SFML/Graphics/CircleShape.hpp>
+	<SFML/Graphics/Color.hpp>
+	<SFML/System/Vector2.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Graphics/CircleShape.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Shape.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Graphics/Shape.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Drawable.hpp>
+	<SFML/Graphics/Transformable.hpp>
+	<SFML/Graphics/VertexArray.hpp>
+	<SFML/System/Vector2.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Graphics/VertexArray.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Vertex.hpp>
+	<SFML/Graphics/PrimitiveType.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/Graphics/Drawable.hpp>
+	<vector>
+
+1415669274 /home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/StationaryTarget.hpp
+	<memory>
+	<SFML/Graphics/CircleShape.hpp>
+	"Target.hpp"
+	"SceneNode.hpp"
+
+1415647909 /home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/Obstacle.hpp
+	<stdexcept>
+	<memory>
+	<SFML/Graphics/Color.hpp>
+	<SFML/Graphics/VertexArray.hpp>
+	<SFML/Graphics/RectangleShape.hpp>
+	"Collidable.hpp"
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Graphics/RectangleShape.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Shape.hpp>
+
+1415300667 /home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/Collidable.hpp
+
+1415659013 /home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/SceneNode.hpp
+	<vector>
+	<memory>
+	<SFML/Graphics/RenderWindow.hpp>
+	<SFML/Graphics/Transformable.hpp>
+	<SFML/Graphics/Drawable.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/System/Time.hpp>
+
+1415662015 source:/home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/sceneNode.cpp
+	<algorithm>
+	<cassert>
+	"SceneNode.hpp"
+
+1415657230 /home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/SpriteNode.hpp
+	<vector>
+	<SFML/Graphics/Sprite.hpp>
+	<SFML/Graphics/Texture.hpp>
+	<SFML/System/Time.hpp>
+	"SceneNode.hpp"
+
+1415998642 source:/home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/utility.cpp
+	<cmath>
+	<ctime>
+	<cstdlib>
+	"Utility.hpp"
+	"C2DMatrix.h"
+
+1415657052 source:/home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/stationaryTarget.cpp
+	"StationaryTarget.hpp"
+
+1415657228 source:/home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/spriteNode.cpp
+	"SpriteNode.hpp"
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Graphics/Font.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Glyph.hpp>
+	<SFML/Graphics/Texture.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/System/Vector2.hpp>
+	<SFML/System/String.hpp>
+	<map>
+	<string>
+	<vector>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Graphics/Glyph.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Rect.hpp>
+
+1409119867 /home/rts/Libraries/SFML-master/include/SFML/Graphics/Text.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Drawable.hpp>
+	<SFML/Graphics/Transformable.hpp>
+	<SFML/Graphics/Font.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/Graphics/VertexArray.hpp>
+	<SFML/System/String.hpp>
+	<string>
+	<vector>
+
+1415808359 /home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/C2DMatrix.h
+	<math.h>
+	<vector>
+	"utils.h"
+
+1415808250 /home/rts/C++/CB/AI/SteeringBehaviours/SteeringBehaviours/src/utils.h
+	<math.h>
+	<sstream>
+	<string>
+	<vector>
+	<limits>
+	<cassert>
+	<iomanip>
+

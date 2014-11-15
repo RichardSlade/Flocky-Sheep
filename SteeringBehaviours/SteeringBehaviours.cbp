@@ -14,6 +14,11 @@
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
+				<Linker>
+					<Add library="sfml-graphics-d" />
+					<Add library="sfml-window-d" />
+					<Add library="sfml-system-d" />
+				</Linker>
 			</Target>
 			<Target title="Release">
 				<Option output="bin/Release/SteeringBehaviours" prefix_auto="1" extension_auto="1" />
@@ -25,12 +30,42 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add library="sfml-graphics" />
+					<Add library="sfml-window" />
+					<Add library="sfml-system" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-std=c++11" />
 			<Add option="-Wall" />
+			<Add directory="/home/rts/Libraries/SFML-master/include" />
 		</Compiler>
+		<Linker>
+			<Add directory="/home/rts/Libraries/SFML-build/lib" />
+		</Linker>
+		<Unit filename="src/Collidable.hpp" />
+		<Unit filename="src/Controller.hpp" />
+		<Unit filename="src/Enum.hpp" />
+		<Unit filename="src/MovingEntity.hpp" />
+		<Unit filename="src/Obstacle.hpp" />
+		<Unit filename="src/SceneNode.hpp" />
+		<Unit filename="src/SpriteNode.hpp" />
+		<Unit filename="src/StationaryTarget.hpp" />
+		<Unit filename="src/SteeringBehaviour.hpp" />
+		<Unit filename="src/Target.hpp" />
+		<Unit filename="src/Utility.hpp" />
+		<Unit filename="src/Vehicle.hpp" />
+		<Unit filename="src/World.hpp" />
+		<Unit filename="src/controller.cpp" />
+		<Unit filename="src/main.cpp" />
+		<Unit filename="src/sceneNode.cpp" />
+		<Unit filename="src/spriteNode.cpp" />
+		<Unit filename="src/stationaryTarget.cpp" />
+		<Unit filename="src/steeringBehaviour.cpp" />
+		<Unit filename="src/utility.cpp" />
+		<Unit filename="src/vehicle.cpp" />
+		<Unit filename="src/world.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
