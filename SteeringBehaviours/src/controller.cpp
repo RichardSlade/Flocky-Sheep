@@ -3,13 +3,12 @@
 const sf::Time Controller::FPS = sf::seconds(1.f/60.f);
 
 Controller::Controller()
-: mWindow(sf::VideoMode(640, 480), "AI Steering behaviours", sf::Style::Close)
+: mWindow(sf::VideoMode(1280, 680), "AI Steering behaviours", sf::Style::Close)
 , mCountDown(FPS)
-//, mWorld(*this, mWindow)
 {
+    mWindow.setPosition(sf::Vector2i(0, 0));
     loadTextures();
 
-//    mWorld = new World(*this, mWindow);
     mWorld = World::upWorld(new World(*this, mWindow));
 };
 
@@ -19,7 +18,10 @@ void Controller::loadTextures()
 
     fileNames.push_back("media/grass.png");
     fileNames.push_back("media/hunter.png");
-
+    fileNames.push_back("media/sheep.png");
+    fileNames.push_back("media/grass1.png");
+    fileNames.push_back("media/tree.png");
+    fileNames.push_back("media/pen.png");
 
     for(std::string s : fileNames)
     {

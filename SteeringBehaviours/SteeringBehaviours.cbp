@@ -44,27 +44,33 @@
 		<Linker>
 			<Add directory="/home/rts/Libraries/SFML-build/lib" />
 		</Linker>
-		<Unit filename="src/Collidable.hpp" />
 		<Unit filename="src/Controller.hpp" />
-		<Unit filename="src/Enum.hpp" />
+		<Unit filename="src/LevelBlock.hpp" />
 		<Unit filename="src/MovingEntity.hpp" />
-		<Unit filename="src/Obstacle.hpp" />
 		<Unit filename="src/SceneNode.hpp" />
+		<Unit filename="src/Scenery.hpp" />
+		<Unit filename="src/Sheep.hpp" />
+		<Unit filename="src/SheepStates.hpp" />
 		<Unit filename="src/SpriteNode.hpp" />
+		<Unit filename="src/State.hpp" />
+		<Unit filename="src/StateMachine.hpp" />
 		<Unit filename="src/StationaryTarget.hpp" />
 		<Unit filename="src/SteeringBehaviour.hpp" />
 		<Unit filename="src/Target.hpp" />
 		<Unit filename="src/Utility.hpp" />
-		<Unit filename="src/Vehicle.hpp" />
+		<Unit filename="src/Wall.hpp" />
 		<Unit filename="src/World.hpp" />
 		<Unit filename="src/controller.cpp" />
+		<Unit filename="src/levelBlock.cpp" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/sceneNode.cpp" />
+		<Unit filename="src/scenery.cpp" />
+		<Unit filename="src/sheep.cpp" />
+		<Unit filename="src/sheepStates.cpp" />
 		<Unit filename="src/spriteNode.cpp" />
 		<Unit filename="src/stationaryTarget.cpp" />
 		<Unit filename="src/steeringBehaviour.cpp" />
 		<Unit filename="src/utility.cpp" />
-		<Unit filename="src/vehicle.cpp" />
 		<Unit filename="src/world.cpp" />
 		<Extensions>
 			<code_completion />

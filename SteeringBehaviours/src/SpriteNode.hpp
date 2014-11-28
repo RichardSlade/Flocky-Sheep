@@ -9,8 +9,6 @@
 
 #include "SceneNode.hpp"
 
-//class SceneNode;
-
 class SpriteNode : public SceneNode
 {
 private:

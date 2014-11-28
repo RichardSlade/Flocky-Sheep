@@ -11,9 +11,23 @@
 #include <SFML/System/NonCopyable.hpp>
 
 #include "World.hpp"
+//#include "Enum.hpp"
 
 class Controller : sf::NonCopyable
 {
+public:
+
+    enum Textures
+    {
+        Background,
+        Vehicle,
+        Sheep,
+        Grass,
+        Tree,
+        Pen,
+        Num
+    };
+
 private:
     static const sf::Time           FPS;
 
@@ -32,7 +46,7 @@ public:
 
     void                            run();
 
-    sf::Texture&                    getTexture(Textures::Type type){ return mTextures[type]; };
+    sf::Texture&                    getTexture(Textures type){ return mTextures.at(type); }
 };
 
 #endif // CONTROLLER_HPP

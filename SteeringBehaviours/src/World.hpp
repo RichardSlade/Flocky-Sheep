@@ -10,13 +10,14 @@
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/System/NonCopyable.hpp>
 
-#include "Enum.hpp"
-#include "Vehicle.hpp"
-#include "StationaryTarget.hpp"
-#include "Obstacle.hpp"
 #include "SceneNode.hpp"
 
 class Controller;
+class LevelBlock;
+class Sheep;
+class Scenery;
+class Wall;
+class StationaryTarget;
 
 class World : private sf::NonCopyable
 {
@@ -24,9 +25,14 @@ public:
     typedef std::unique_ptr<World>  upWorld;
 
 private:
-    static const int                        NumVehicles;
-    static const int                        NumWalls;
-    static const float                      TargetRadius;
+    static const int                        mLevelDivision;
+    static const int                        mNumSheep;
+    static const int                        mNumWalls;
+    static const int                        mNumObstacles;
+    static const float                      mObstacleRadius;
+    static const float                      mTargetRadius;
+    static const float                      mWallWidth;
+    static const float                      mScrollSpeed;
 
     sf::Font                                mFont;
 
@@ -40,12 +46,21 @@ private:
     std::array<SceneNode*
                 , SceneNode::Layers::Num>   mSceneLayers;
 
-    std::vector<Obstacle*>                  mObstacles;
-    std::vector<Vehicle*>                   mVehicles;
+    std::array<std::array<LevelBlock*
+                         , 8>
+                         , 8>               mLevel;
+
+    std::vector<Wall*>                      mWalls;
+    std::vector<Sheep*>                     mSheep;
     std::vector<StationaryTarget*>          mTargets;
 
     void                                    buildScene();
+    void                                    generateLevel();
+    void                                    generateWalls();
+    void                                    generateAgents();
     void                                    generateObstacles();
+    void                                    createObstacle(sf::Vector2f);
+    void                                    handleRealTimeInput();
 
 public:
                                             World(Controller&, sf::RenderWindow&);
@@ -53,6 +68,9 @@ public:
     void                                    update(sf::Time);
     void                                    handleInput();
     void                                    display();
+
+    std::vector<Scenery*>                   obstaclesInRange(Sheep*, float) const;
+    std::vector<Wall*>                      getWorldWalls() const { return mWalls; }
 
     sf::FloatRect                           getViewBounds();
 };

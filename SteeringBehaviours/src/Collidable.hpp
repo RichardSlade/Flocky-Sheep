@@ -3,21 +3,27 @@
 
 struct Collidable
 {
+protected:
+    float       mRadius;
+
 public:
     enum Type
     {
         Wall,
-        Target,
+        Obstacle,
+        Entity,
         Num
     };
 
-    Type        type;
-    bool        hasCollided;
+    Type        mType;
 
-                Collidable(Type t)
-                : type(t)
-                , hasCollided(false)
+                Collidable(Type t, float r = 0.f)
+                : mRadius(r)
+                , mType(t)
                 {};
+
+    // Getters
+    float       radius() const { return mRadius; }
 };
 
 #endif // COLLIDABLE_HPP

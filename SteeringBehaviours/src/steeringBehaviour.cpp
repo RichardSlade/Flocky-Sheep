@@ -3,48 +3,117 @@
 #include <iostream>
 
 #include "SteeringBehaviour.hpp"
-#include "Vehicle.hpp"
+#include "Sheep.hpp"
 #include "Target.hpp"
 #include "Utility.hpp"
+#include "Scenery.hpp"
+#include "Wall.hpp"
 
-const float SteeringBehaviour::mWanderRadius = 40.f;
-const float SteeringBehaviour::mWanderDistance = 10.f;
-const float SteeringBehaviour::mWanderJitter = 40.f;
+const float SteeringBehaviour::mWanderRadius = 1.2f;
+const float SteeringBehaviour::mWanderDistance = 30.f;
+const float SteeringBehaviour::mWanderJitter = 80.f;
 const float SteeringBehaviour::mPI = 3.14159265358979;
+const float SteeringBehaviour::mMinViewBoxLength = 60.f;
+const float SteeringBehaviour::mObstacleAvoidanceMultiplier = 5.f;
+const float SteeringBehaviour::mWallAvoidanceMultiplier = 10.f;
+const float SteeringBehaviour::mSeekMultiplier = 1.f;
+const float SteeringBehaviour::mWanderMultiplier = 1.f;
+const float SteeringBehaviour::mFeelerLength = 25.f;
 
-SteeringBehaviour::SteeringBehaviour(const Vehicle* host
-                                     , SteeringBehaviours::Type steerType
-                                     , sf::Vector2f wanderTarg)
+SteeringBehaviour::SteeringBehaviour(const Sheep* host)
 : mHost(host)
-, mSteerType(steerType)
 , mTheta(mHost->getRotation() * (mPI / 180.f))
-//, mTheta(0.628)
-//, mWanderTarget(sf::Vector2f(mHost->position().x + (mWanderRadius * std::cos(mTheta))
-//                             , mHost->position().y + (mWanderRadius * std::sin(mTheta))))
-//, mWanderTarget(sf::Vector2f(mWanderRadius * std::cos(mTheta)
-//                             , mWanderRadius * std::sin(mTheta)))
 , mWanderTarget(std::sin(mTheta) * mWanderRadius, -std::cos(mTheta) * mWanderRadius)
-, mWanderCircle(mWanderRadius)
-, mLocalTarget(4.f)
-, mWorldTarget(4.f)
+, mObstacleCollision(false)
+//, mWanderCircle(mWanderRadius)
+//, mLocalTarget(4.f)
+//, mWorldTarget(4.f)
+, mViewBox(sf::Vector2f(mHost->getSpriteWidth(), -mMinViewBoxLength))
+, mViewBoxEnd(mHost->radius(),-mMinViewBoxLength)
 , mLines(sf::Lines)
 {
-    sf::FloatRect bounds = mWanderCircle.getLocalBounds();
-    mWanderCircle.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
-    mWanderCircle.setPosition(mHost->position());
+    mViewBox.setPosition(-mHost->getSpriteWidth() / 2.f, 0.f);
+    mViewBox.setFillColor(sf::Color::Green);
 
-    bounds = mLocalTarget.getLocalBounds();
-    mLocalTarget.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
-    mLocalTarget.setFillColor(sf::Color::Green);
+    for(bool& b : mBehaviourFlags)
+        b = false;
 
-    bounds = mWorldTarget.getLocalBounds();
-    mWorldTarget.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
-    mWorldTarget.setFillColor(sf::Color::Cyan);
+    mBehaviourFlags.at(SteeringBehaviour::ObstacleAvoidance) = true;
+    mBehaviourFlags.at(SteeringBehaviour::WallAvoidance) = true;
+
+
+//    sf::FloatRect bounds = mWanderCircle.getLocalBounds();
+//    mWanderCircle.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
+//    mWanderCircle.setPosition(mHost->position());
+//    mWanderCircle.setFillColor(sf::Color::Yellow);
+//
+//    bounds = mLocalTarget.getLocalBounds();
+//    mLocalTarget.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
+//    mLocalTarget.setFillColor(sf::Color::Green);
+//
+//    bounds = mWorldTarget.getLocalBounds();
+//    mWorldTarget.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
+//    mWorldTarget.setFillColor(sf::Color::Cyan);
 
 //    mWorldTarget.setPosition(0.f, 0.f);
 
 //    mWanderTarget = mHost->getTransform() * mWanderTarget;
 };
+
+bool SteeringBehaviour::accumulateForce(sf::Vector2f& runningTotal, sf::Vector2f forceToAdd)
+{
+    float magSoFar = magVec(runningTotal);
+
+    float magRemaining = mHost->maxForce() - magSoFar;
+
+//    std::cout << "Running Total X: " << runningTotal.x << " Y: " << runningTotal.y << std::endl;
+//    std::cout << "Force to Add X: " << forceToAdd.x << " Y: " << forceToAdd.y << std::endl;
+//    std::cout << "Mag so far: " << magSoFar << std::endl;
+//    std::cout << "Mag Remaining: " << magRemaining << std::endl;
+
+    if(magRemaining <= 0.01)
+    {
+//        std::cout << "No Space" << std::endl;
+        return false;
+    }
+
+    double magToAdd = magVec(forceToAdd);
+
+    if(magToAdd < magRemaining)
+    {
+        runningTotal += forceToAdd;
+    }
+    else
+    {
+        runningTotal += normVec(forceToAdd) * magRemaining;
+    }
+
+    return true;
+}
+
+void SteeringBehaviour::createFeelers()
+{
+    mFeelers.clear();
+    mFeelerCollisions.clear();
+    mLines.clear();
+
+    mFeelers.push_back(sf::Vector2f(std::sin(-45.f * (mPI / 180.f)) * mFeelerLength
+                                      , -std::cos(-45.f *(mPI / 180.f)) * mFeelerLength));
+
+    mFeelers.push_back(sf::Vector2f(0.f
+                                      , -mFeelerLength));
+
+    mFeelers.push_back(sf::Vector2f(std::sin(45.f * (mPI / 180.f)) * mFeelerLength
+                                      , -std::cos(45.f *(mPI / 180.f)) * mFeelerLength));
+
+    for(sf::Vector2f& v : mFeelers)
+    {
+        mFeelerCollisions.push_back(false);
+
+        mLines.append(sf::Vertex(sf::Vector2f(0.f, 0.f), sf::Color::Red));
+        mLines.append(sf::Vertex(v, sf::Color::Red));
+    }
+}
 
 sf::Vector2f SteeringBehaviour::seek(sf::Vector2f target)
 {
@@ -60,6 +129,8 @@ sf::Vector2f SteeringBehaviour::arrive(sf::Vector2f target,
 
     float dist = magVec(toTarget);
 
+    sf::Vector2f steeringForce;
+
     if(dist > 0.f)
     {
         const float DecelerationTweaker = 0.3;
@@ -72,13 +143,13 @@ sf::Vector2f SteeringBehaviour::arrive(sf::Vector2f target,
 
         sf::Vector2f desiredVelocity = toTarget * speed / dist;
 
-        return (desiredVelocity - mHost->velocity());
+        steeringForce = (desiredVelocity - mHost->velocity());
     }
 
-    return sf::Vector2f(0.f, 0.f);
+    return steeringForce;
 }
 
-sf::Vector2f SteeringBehaviour::evade(const Vehicle* pursuer)
+sf::Vector2f SteeringBehaviour::evade(const Sheep* pursuer)
 {
     sf::Vector2f toPursuer(pursuer->position() - mHost->position());
 
@@ -122,75 +193,197 @@ sf::Vector2f SteeringBehaviour::wander(sf::Time dt)
 {
     float jitterTimeSlice = mWanderJitter * dt.asSeconds();
 
-    std::cout << "Wander Targ: " << mWanderTarget.x << " " << mWanderTarget.y << std::endl;
-
-//    float jitter1 = randomClamped() * jitterTimeSlice;
-//    float jitter2 = randomClamped() * jitterTimeSlice;
     float jitter1 = rangedClamped(-1.f, 1.f) * jitterTimeSlice;
     float jitter2 = rangedClamped(-1.f, 1.f) * jitterTimeSlice;
-
-    float currentRotation = mHost->getRotation() * (mPI / 180.f);
-
-//    mWanderTarget = sf::Vector2f(std::sin(currentRotation) * mWanderRadius
-//                                 , -std::cos(currentRotation) * mWanderRadius);
-
-//    mWanderTarget /= std::sqrt(2.f);
 
     mWanderTarget += sf::Vector2f(jitter1
                                   , jitter2);
 
-    std::cout << "Jitter: " << jitter1 << " " << jitter2 << std::endl;
-    std::cout << "Wander Targ +Jitter: " << mWanderTarget.x << " " << mWanderTarget.y << std::endl;
-
     mWanderTarget = normVec(mWanderTarget);
     mWanderTarget *= mWanderRadius;
 
-//    mWanderTarget.x *= std::sin(currentRotation);
-//    mWanderTarget.y *= -std::cos(currentRotation);
-
-    std::cout << "Wander Targ Translate to Circle: " << mWanderTarget.x << " " << mWanderTarget.y << std::endl;
-    sf::Vector2f hostPos(mHost->position());
-
-//    sf::Vector2f targetLocal = sf::Vector2f(std::sin(currentRotation) * mWanderTarget.x
-//                                                            , std::cos(currentRotation) * mWanderTarget.y);
-//    sf::Vector2f targetLocal = mWanderTarget *= mWanderDistance;
-//    sf::Vector2f targetLocal = mWanderTarget *= mWanderDistance;
-    sf::Vector2f targetLocal = mWanderTarget + sf::Vector2f(0.f, 0.f);
-//    sf::Vector2f targetLocal = mHost->heading();// + sf::Vector2f(mWanderDistance, 0.f);
-
+    sf::Vector2f targetLocal = mWanderTarget + sf::Vector2f(0.f, -mWanderDistance);
     sf::Vector2f targetWorld = mHost->getWorldTransform() * targetLocal;
-//    sf::Vector2f targetWorld = mHost->getWorldTransform() * mWanderTarget;
 
-//    std::cout << "Wander Targ With Dist: " << mWanderTarget.x << " " << mWanderTarget.y << std::endl;
-    std::cout << "HostPos: " << hostPos.x << " " << hostPos.y << std::endl;
-    std::cout << "Local: " << targetLocal.x << " " << targetLocal.y << std::endl;
-    std::cout << "World: " << targetWorld.x << " " << targetWorld.y << std::endl;
-
-    mLines.append(sf::Vertex(sf::Vector2f(0.f, 0.f), sf::Color::Green));
-    mLines.append(sf::Vertex(targetLocal, sf::Color::Green));
-
-//    mLocalTarget.setPosition(targetLocal);
-    mLocalTarget.setPosition(mWanderTarget);
-    mWorldTarget.setPosition(targetLocal);
+//    mLines.append(sf::Vertex(sf::Vector2f(0.f, 0.f), sf::Color::Green));
+//    mLines.append(sf::Vertex(targetLocal, sf::Color::Green));
 
     sf::Vector2f returns(targetWorld - mHost->getWorldPosition());
-
-    std::cout << "Returns: " << returns.x << " " << returns.y << std::endl << std::endl;
 
     return returns;
 }
 
+sf::Vector2f SteeringBehaviour::obstacleAvoidance()
+{
+    mViewBox.setFillColor(sf::Color::Green);
+
+    std::vector<Scenery*> nearObstacles = mHost->getObstaclesInRange();
+
+    Scenery* closestObstacle = nullptr;
+
+    float distToClosest = -1.f;
+
+    for(Scenery* ob : nearObstacles)
+    {
+        sf::Vector2f obPos = mHost->getInverseTransform() * ob->getPosition();
+
+        if(obPos.y <= 0.f)
+        {
+            float expandedRadius = ob->radius() + mHost->radius();
+//            float expandedRadius = ob->radius() + mMinViewBoxLength;
+
+            if(std::fabs(obPos.x) < expandedRadius
+               && std::fabs(obPos.y) < expandedRadius)
+            {
+//                ob->changeColour(sf::Color::Magenta);
+
+                float sqrtPart = std::sqrt((expandedRadius * expandedRadius) - (obPos.x * obPos.x));
+                float intersectionPoint = obPos.y - sqrtPart;
+
+                if(intersectionPoint >= 0.f)
+                {
+                    intersectionPoint = obPos.y + sqrtPart;
+                }
+
+                if(intersectionPoint < distToClosest
+                   || distToClosest == -1.f)
+                {
+                    distToClosest = intersectionPoint;
+                    closestObstacle = ob;
+                }
+            }
+        }
+    }
+
+    sf::Vector2f steeringForce;
+
+    if(closestObstacle)
+    {
+//        mViewBox.setFillColor(sf::Color::Magenta);
+        mObstacleCollision = true;
+
+        sf::Vector2f closestPos = mHost->getInverseTransform() * closestObstacle->getPosition();
+
+        float multiplier = 1.f + (mMinViewBoxLength - closestPos.y) / mMinViewBoxLength;
+
+        steeringForce.x = (closestObstacle->radius() - closestPos.x) * multiplier;
+
+//        const float brakingWeight = 0.02;
+
+        steeringForce.y = (closestObstacle->radius() - closestPos.y);// * brakingWeight;
+        steeringForce.y *= -1.f;
+    }
+
+    return steeringForce;
+}
+
+sf::Vector2f SteeringBehaviour::wallAvoidance()
+{
+    createFeelers();
+
+    float distToThisIntersection = 0.f;
+    float distToClosestIntersection = 9999.f;
+
+//    int closestWall = -1;
+
+    sf::Vector2f steeringForce, point, closestPoint;
+
+    std::vector<Wall*> walls = mHost->getWalls();
+
+//    int collisionCount = 0;
+
+    for(size_t flr = 0; flr < Feelers::NumFlr; flr++)
+    {
+        int closestWall = -1;
+        int index = 0;
+
+        for(Wall* w : walls)
+        {
+            std::pair<sf::Vector2f, sf::Vector2f> wallPoints = w->getPoints();
+
+            if(lineIntersection2D(mHost->getWorldPosition()
+                                  , mHost->getWorldTransform() * mFeelers.at(flr)
+                                  , wallPoints.first
+                                  , wallPoints.second
+                                  , distToThisIntersection
+                                  , point))
+            {
+                mFeelerCollisions.at(flr) = true;
+
+                if(distToThisIntersection < distToClosestIntersection)
+                {
+                    distToClosestIntersection = distToThisIntersection;
+                    closestWall = index;
+                    closestPoint = point;
+                }
+            }
+
+            index ++;
+        }
+
+        if(closestWall >= 0)
+        {
+            sf::Vector2f overShoot = (mHost->getWorldTransform() * mFeelers.at(flr)) - closestPoint;
+            steeringForce = walls.at(closestWall)->getNorm() * magVec(overShoot);
+        }
+    }
+
+    return steeringForce;
+}
+
 sf::Vector2f SteeringBehaviour::calculate(sf::Time dt)
 {
-    mLines.clear();
+    sf::Vector2f steeringForce;
 
-    switch(mSteerType)
+    mObstacleCollision = false;
+
+    if(mBehaviourFlags[WallAvoidance])
     {
-        case SteeringBehaviours::Seek: return seek(mHost->targetPos());
-        case SteeringBehaviours::Arrive: return arrive(mHost->targetPos(), Deceleration::Fast);
-        case SteeringBehaviours::Flee: return flee(mHost->targetPos());
-        case SteeringBehaviours::Pursuit: return pursuit(mHost->target());
-        case SteeringBehaviours::Wander: return wander(dt);
-        default: return sf::Vector2f(0.f, 0.f);
+        sf::Vector2f force = wallAvoidance() * mWallAvoidanceMultiplier;
+
+        if(!accumulateForce(steeringForce, force))
+            return steeringForce;
     }
+
+    if(mBehaviourFlags[ObstacleAvoidance])
+    {
+        sf::Vector2f force = obstacleAvoidance() * mObstacleAvoidanceMultiplier;
+
+        if(!accumulateForce(steeringForce, force))
+            return steeringForce;
+
+    }
+
+    if(mBehaviourFlags[Seek])
+    {
+        sf::Vector2f force = seek(mHost->targetPos()) * mSeekMultiplier;
+
+        if(!accumulateForce(steeringForce, force))
+            return steeringForce;
+    }
+
+    if(mBehaviourFlags[Wander])
+    {
+        sf::Vector2f force = wander(dt) * mWanderMultiplier;
+
+        if(!accumulateForce(steeringForce, force))
+            return steeringForce;
+    }
+
+//      steeringForce = arrive(mHost->targetPos(), Deceleration::Fast);
+//     steeringForce = flee(mHost->targetPos());
+//    steeringForce = pursuit(mHost->target());
+//    steeringForce = wander(dt);
+
+    return steeringForce;
+}
+
+void SteeringBehaviour::setNewBehaviour(SteeringBehaviour::Behaviour newType)
+{
+    for(bool& b : mBehaviourFlags)
+        b = false;
+
+    mBehaviourFlags.at(newType) = true;
+    mBehaviourFlags.at(SteeringBehaviour::ObstacleAvoidance) = true;
+    mBehaviourFlags.at(SteeringBehaviour::WallAvoidance) = true;
 }
