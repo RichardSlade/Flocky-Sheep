@@ -20,13 +20,15 @@ public:
     {
         Background,
         Foreground,
-        UI,
+        HUD,
         Num
     };
 
-private:
+protected:
     SceneNode*                              mParent;
     std::vector<upScNode>                   mChildren;
+
+    bool                                    mToRemove;
 
     virtual void                            updateCurrent(sf::Time){};
     virtual void                            drawCurrent(sf::RenderTarget&, sf::RenderStates) const {};
@@ -43,9 +45,18 @@ public:
 
     void                                    addChild(upScNode);
     SceneNode::upScNode                     deleteChild(const SceneNode&);
+    void                                    removeDeletedNodes();
 
     sf::Transform			                getWorldTransform() const;
     sf::Vector2f			                getWorldPosition() const;
+
+    // Getters
+    bool                                    getToRemove() const
+                                            { return mToRemove; }
+
+//    // Setters
+//    void                                    setToRemove(bool status)
+//                                            { mToRemove = status; }
 };
 
 #endif // SCENENODE_HPP

@@ -17,7 +17,7 @@ private:
     virtual void                drawCurrent(sf::RenderTarget&, sf::RenderStates) const;
 
 public:
-                                SpriteNode(sf::Texture& t
+                                SpriteNode(const sf::Texture& t
                                            , sf::Vector2f pos
                                            , sf::IntRect rect
                                            , bool resetOrigin = false)
@@ -31,6 +31,27 @@ public:
 
                                     mSprite.setPosition(pos);
                                 };
+
+                                SpriteNode(const sf::Texture& t
+                                           , sf::Vector2f pos
+                                           , bool resetOrigin = false)
+                                : mSprite(t)
+                                {
+                                    if(resetOrigin)
+                                    {
+                                        sf::FloatRect bounds = mSprite.getLocalBounds();
+                                        mSprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
+                                    }
+
+                                    mSprite.setPosition(pos);
+                                };
+
+    // Getters
+    sf::FloatRect               getGlobalBounds()
+                                { return mSprite.getGlobalBounds(); }
+
+    sf::FloatRect               getLocalBounds()
+                                { return mSprite.getLocalBounds(); }
 
 };
 

@@ -44,9 +44,22 @@
 		<Linker>
 			<Add directory="/home/rts/Libraries/SFML-build/lib" />
 		</Linker>
+		<Unit filename="src/AppState.hpp" />
 		<Unit filename="src/Controller.hpp" />
+		<Unit filename="src/Dog.hpp" />
+		<Unit filename="src/EntityStats.hpp" />
+		<Unit filename="src/GameCompleteScreen.hpp" />
+		<Unit filename="src/GameState.hpp" />
+		<Unit filename="src/HUD.hpp" />
+		<Unit filename="src/Level.hpp" />
 		<Unit filename="src/LevelBlock.hpp" />
+		<Unit filename="src/LevelCompleteScreen.hpp" />
+		<Unit filename="src/MenuState.hpp" />
 		<Unit filename="src/MovingEntity.hpp" />
+		<Unit filename="src/MovingTarget.hpp" />
+		<Unit filename="src/Params.hpp" />
+		<Unit filename="src/Path.hpp" />
+		<Unit filename="src/PausedScreen.hpp" />
 		<Unit filename="src/SceneNode.hpp" />
 		<Unit filename="src/Scenery.hpp" />
 		<Unit filename="src/Sheep.hpp" />
@@ -54,23 +67,30 @@
 		<Unit filename="src/SpriteNode.hpp" />
 		<Unit filename="src/State.hpp" />
 		<Unit filename="src/StateMachine.hpp" />
-		<Unit filename="src/StationaryTarget.hpp" />
 		<Unit filename="src/SteeringBehaviour.hpp" />
-		<Unit filename="src/Target.hpp" />
 		<Unit filename="src/Utility.hpp" />
 		<Unit filename="src/Wall.hpp" />
 		<Unit filename="src/World.hpp" />
 		<Unit filename="src/controller.cpp" />
+		<Unit filename="src/dog.cpp" />
+		<Unit filename="src/gameCompleteScreen.cpp" />
+		<Unit filename="src/gameState.cpp" />
+		<Unit filename="src/hud.cpp" />
+		<Unit filename="src/level.cpp" />
 		<Unit filename="src/levelBlock.cpp" />
+		<Unit filename="src/levelCompleteScreen.cpp" />
 		<Unit filename="src/main.cpp" />
+		<Unit filename="src/menuState.cpp" />
+		<Unit filename="src/movingEntity.cpp" />
+		<Unit filename="src/path.cpp" />
+		<Unit filename="src/pausedScreen.cpp" />
 		<Unit filename="src/sceneNode.cpp" />
-		<Unit filename="src/scenery.cpp" />
 		<Unit filename="src/sheep.cpp" />
 		<Unit filename="src/sheepStates.cpp" />
 		<Unit filename="src/spriteNode.cpp" />
-		<Unit filename="src/stationaryTarget.cpp" />
 		<Unit filename="src/steeringBehaviour.cpp" />
 		<Unit filename="src/utility.cpp" />
+		<Unit filename="src/wall.cpp" />
 		<Unit filename="src/world.cpp" />
 		<Extensions>
 			<code_completion />

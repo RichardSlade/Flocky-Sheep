@@ -1,28 +1,34 @@
 #include <cmath>
 #include <ctime>
-#include<cstdlib>
+#include <cstdlib>
+#include <iostream>
 
 #include "Utility.hpp"
+#include "Params.hpp"
 
-float magVec(const sf::Vector2f vec)
+float magVec(sf::Vector2f vec)
 {
     return std::sqrt((vec.x * vec.x) + (vec.y * vec.y));
 }
 
-sf::Vector2f normVec(const sf::Vector2f vec)
+sf::Vector2f normVec(sf::Vector2f vec)
 {
-    return vec / magVec(vec);
+    float mag = magVec(vec);
+
+    if(mag > MINFLOAT)
+        return vec / magVec(vec);
+    else
+        return sf::Vector2f();
 }
 
 void truncateVec(sf::Vector2f& vec, float maxSpeed)
 {
     float mag = magVec(vec);
 
-    while(mag > maxSpeed)
+    if(mag > maxSpeed)
     {
-        vec /= 16.f;
-
-        mag = magVec(vec);
+        vec = normVec(vec);
+        vec *= maxSpeed;
     }
 }
 
@@ -48,9 +54,14 @@ float randomClamped()
     return static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 }
 
+float rangedClamped(int lo, int hi)
+{
+    return lo + static_cast<int>(rand()) /( static_cast<int>(RAND_MAX/(hi-lo)));
+}
+
 float rangedClamped(float lo, float hi)
 {
-    return lo + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(hi-lo)));
+    return lo + static_cast<float>(rand()) /(static_cast<float>(RAND_MAX/(hi-lo)));
 }
 
 void clampRotation(float& angle, float min, float max)
@@ -89,7 +100,6 @@ bool lineIntersection2D(sf::Vector2f A
         sf::Vector2f tempVec = (B - A) * r;
 
         dist = magVec(tempVec);
-//        dist = Vec2Distance(A,B) * r;
         point = A + r * (B - A);
         return true;
     }
@@ -100,3 +110,4 @@ bool lineIntersection2D(sf::Vector2f A
         return false;
     }
 }
+

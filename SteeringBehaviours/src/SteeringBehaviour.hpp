@@ -11,15 +11,15 @@
 #include <SFML/System/Time.hpp>
 
 #include "Enum.hpp"
+#include "Path.hpp"
 
-class Sheep;
+class Params;
+class MovingEntity;
 class Target;
 
 class SteeringBehaviour
 {
 public:
-    typedef std::unique_ptr<SteeringBehaviour> upSteeringBehaviour;
-
     enum Deceleration
     {
         Slow = 3,
@@ -29,14 +29,16 @@ public:
 
     enum Behaviour
     {
-        Seek,
+        Rest,
         Arrive,
-        Flee,
-        Pursuit,
+        Evade,
         Wander,
+        FollowPath,
         ObstacleAvoidance,
         WallAvoidance,
-        Num
+        Seperation,
+        Flock,
+        NumBehaviour
     };
 
     enum Feelers
@@ -47,63 +49,85 @@ public:
         NumFlr
     };
 
-    static const float              mPI;
-    static const float              mWanderRadius;
-    static const float              mWanderDistance;
-    static const float              mWanderJitter;
-    static const float              mMinViewBoxLength;
-    static const float              mObstacleAvoidanceMultiplier;
-    static const float              mWallAvoidanceMultiplier;
-    static const float              mSeekMultiplier;
-    static const float              mWanderMultiplier;
-    static const float              mFeelerLength;
+     static const float                     mPI;
 
 private:
-    const Sheep*                    mHost;
-    float                           mTheta;
+     const float                            mWanderRadius;
+     const float                            mWanderDistance;
+     const float                            mWanderJitter;
+     const float                            mMinViewBoxLength;
+     const float                            mInteractionRadius;
+     const float                            mFeelerLength;
+     const float                            mMinArriveDist;
+
+     const float                            mObstacleAvoidanceMultiplier;
+     const float                            mWallAvoidanceMultiplier;
+     const float                            mArriveMultiplier;
+     const float                            mEvadeMultiplier;
+     const float                            mWanderMultiplier;
+     const float                            mSeperationMultiplier;
+     const float                            mAlignmentMultiplier;
+     const float                            mCohesionMultiplier;
+     const float                            mFlockingMultiplier;
+
+    MovingEntity*                           mHost;
+    float                                   mTheta;
+    Path                                    mPath;
 
     std::array<bool,
-                Behaviour::Num>     mBehaviourFlags;
-    sf::Vector2f                    mWanderTarget;
-    std::vector<sf::Vector2f>       mFeelers;
-    std::vector<bool>               mFeelerCollisions;
-    bool                            mObstacleCollision;
+                Behaviour::NumBehaviour>    mBehaviourFlags;
 
-//    sf::CircleShape                 mWanderCircle;
-//    sf::CircleShape                 mLocalTarget;
-//    sf::CircleShape                 mWorldTarget;
-    sf::RectangleShape              mViewBox;
-    sf::Vector2f                    mViewBoxEnd;
+    sf::Vector2f                            mWanderTarget;
+    std::vector<sf::Vector2f>               mFeelers;
+    sf::Vector2f                            mViewBoxEnd;
 
-    sf::VertexArray                 mLines;
+    bool                                    accumulateForce(sf::Vector2f&, sf::Vector2f);
+    void                                    createFeelers();
 
-    bool                            accumulateForce(sf::Vector2f&, sf::Vector2f);
-    void                            createFeelers();
+    sf::Vector2f                            rest();
 
-    sf::Vector2f                    seek(sf::Vector2f);
-    sf::Vector2f                    arrive(sf::Vector2f, Deceleration);
-    sf::Vector2f                    evade(const Sheep*);
-    sf::Vector2f                    flee(sf::Vector2f);
-    sf::Vector2f                    pursuit(const Target*);
-    sf::Vector2f                    wander(sf::Time);
-    sf::Vector2f                    obstacleAvoidance();
-    sf::Vector2f                    wallAvoidance();
+//    sf::Vector2f                            arrive(Deceleration);
+    sf::Vector2f                            arrive(sf::Vector2f
+                                                   , Deceleration);
+
+    sf::Vector2f                            seek(sf::Vector2f);
+
+    sf::Vector2f                            evade();
+    sf::Vector2f                            flee(sf::Vector2f);
+
+    sf::Vector2f                            wander(sf::Time);
+    sf::Vector2f                            followPath();
+
+    sf::Vector2f                            obstacleAvoidance();
+    sf::Vector2f                            wallAvoidance();
+
+    sf::Vector2f                            seperation();
+    sf::Vector2f                            alignment();
+    sf::Vector2f                            cohesion();
+    sf::Vector2f                            flocking();
 
 public:
-                                    SteeringBehaviour(const Sheep*);
+                                            SteeringBehaviour(MovingEntity*
+                                                              , const Params&);
 
-    sf::Vector2f                    calculate(sf::Time);
-    void                            setNewBehaviour(SteeringBehaviour::Behaviour);
+    sf::Vector2f                            calculate(sf::Time);
 
-//    sf::CircleShape                 wanderCircle() const { return mWanderCircle; }
-//    sf::CircleShape                 targetLocal() const { return mLocalTarget; }
-//    sf::CircleShape                 targetWorld() const { return mWorldTarget; }
-    std::vector<bool>               getFeelerCollisions(){ return mFeelerCollisions; }
-    bool                            getObstacleCollision(){ return mObstacleCollision; }
-    sf::RectangleShape              viewBox() const { return mViewBox; }
-    sf::VertexArray                 lines() const { return mLines; }
-    bool                            checkBehaviour(SteeringBehaviour::Behaviour type)
-                                                    { return mBehaviourFlags.at(type); }
+    void                                    addToPath(sf::Vector2f pos)
+                                            { mPath.addToPath(pos); }
+
+    void                                    startNewPath(sf::Vector2f pos)
+                                            { mPath.startNewPath(pos); }
+
+    // Getters
+    bool                                    checkBehaviour(SteeringBehaviour::Behaviour type) const
+                                            { return mBehaviourFlags.at(type); }
+
+    std::vector<sf::CircleShape>            getPathToDraw() const
+                                            { return mPath.getPathToDraw(); }
+
+    // Setters
+    void                                    setNewBehaviours(std::vector<SteeringBehaviour::Behaviour>);
+    void                                    setNewBehaviours(SteeringBehaviour::Behaviour);
 };
 
 #endif // STEERINGBEHAVIOUR_HPP

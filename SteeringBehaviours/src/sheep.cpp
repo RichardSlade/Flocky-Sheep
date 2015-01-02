@@ -3,96 +3,72 @@
 #include <vector>
 
 #include "Sheep.hpp"
+//#include "Dog.hpp"
 #include "Utility.hpp"
 #include "World.hpp"
-#include "Scenery.hpp"
 
-Sheep::Sheep(const World* world
-                 , sf::Texture& texture
+//const float Sheep::mSightRange = 250.f;
+//const float Sheep::mAngleOfVision = 180.f;
+//const float Sheep::mPanicDistance = Sheep::mSightRange;
+//const float Sheep::mSheepMaxRotation = 0.08f;
+
+Sheep::Sheep(World* world
+                 , const sf::Texture& texture
+                 , const sf::Font& font
                  , sf::Vector2f startPos
-                 , float scale
-                 , Target* targ
-                 , Target* pursue)
-: MovingEntity()
-, mWorld(world)
-, mSprite(texture)
-, mSteering(this)
-, mTarget(targ)
-, mPursuer(pursue)
+                 , State<Sheep>* globalState
+                 , State<Sheep>* initState
+                 , EntityStats stats
+                 , const Params& params
+                 , float scale)
+: MovingEntity(world
+               , texture
+               , font
+               , startPos
+               , stats
+               , params
+               , MovingEntity::EntityType::Sheep
+               , scale)
+
+, mSightRange(params.SheepSightRange)
+, mAngleOfVision(params.SheepAngleOfVision)
+, mPanicDistance(params.SheepPanicDistance)
+, mStateMachine(this, globalState, initState)
 {
-    mSprite.scale(scale, scale);
-    sf::FloatRect bounds = mSprite.getLocalBounds();
-    mSprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
-    mRadius = std::max(bounds.width, bounds.height);
+    mText.setPosition(-10.f, -40.f);
 
-    setPosition(startPos);
-
-    float theta = randomClamped() * (2.f * SteeringBehaviour::mPI);
-    rotate(theta * (180 / SteeringBehaviour::mPI));
-    mHeading = sf::Vector2f(std::sin(theta), -std::cos(theta));
+    mCurrentBlock = mWorld->insertEntityIntoLevel(this);
 }
 
 void Sheep::updateCurrent(sf::Time dt)
 {
-    sf::Vector2f steeringForce = mSteering.calculate(dt);
+    mStateMachine.update();
 
-//    sf::Vector2f acceleration = steeringForce / mMass;
-    sf::Vector2f acceleration = steeringForce * 25.f;// / mMass;
+    MovingEntity::updateCurrent(dt);
 
-    std::vector<bool> collisions = mSteering.getFeelerCollisions();
+    mCurrentBlock->deleteEntity(this);
+    mCurrentBlock = mWorld->insertEntityIntoLevel(this);
 
-    int colCount = 0;
-
-    for(bool b : collisions)
-        if(b) colCount ++;
-
-    if(colCount > 1
-       || (colCount > 1 && mSteering.getObstacleCollision()))
+    if(mCurrentBlock->getType() == LevelBlock::Type::ExitBlock
+       && checkSteeringBehaviour(SteeringBehaviour::Behaviour::Arrive))
     {
-        rotate(180.f);
+        mToRemove = true;
+//        mTarget = nullptr;
+        mMovingTarget = nullptr;
+        mCurrentBlock->deleteEntity(this);
+
+        mWorld->incSheepHerded();
     }
-    else
-    {
-        float currentRotation = getRotation() * (SteeringBehaviour::mPI / 180.f);
-
-    //    sf::Vector2f targetVector(mTarget->position() - getWorldPosition());
-        sf::Vector2f targetVector(acceleration);
-        mHeading = sf::Vector2f(std::sin(currentRotation), -std::cos(currentRotation));
-    //    int sign = signVec(mHeading, steeringForce);
-        int sign = signVec(mHeading, targetVector);
-    //    float angle = std::acos(dotVec(mHeading, normVec(acceleration)));
-        float angle = std::acos(dotVec(mHeading, normVec(targetVector)));
-        angle *= sign;
-
-        clampRotation(angle, -0.2, 0.2);
-
-        if(angle > 0.000001 || angle < -0.000001)
-            rotate(angle * (180.f / SteeringBehaviour::mPI));
-    }
-
-    mVelocity = acceleration * dt.asSeconds();
-
-    truncateVec(mVelocity, mMaxSpeed);
-
-    move(mVelocity);
 }
 
-void Sheep::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
+void Sheep::drawCurrent(sf::RenderTarget& target
+                        , sf::RenderStates states) const
 {
     target.draw(mSprite, states);
-//    target.draw(mSteering.wanderCircle(), states);
-//    target.draw(mSteering.targetLocal(), states);
-//    target.draw(mSteering.targetWorld(), states);
-//    target.draw(mSteering.viewBox(), states);
-//    target.draw(mSteering.lines(), states);
+    target.draw(mText);
 }
 
-std::vector<Scenery*> Sheep::getObstaclesInRange() const
+void Sheep::changeState(Sheep::States newState)
 {
-    return mWorld->obstaclesInRange(const_cast<Sheep*>(this), mRadius);
-}
-
-std::vector<Wall*> Sheep::getWalls() const
-{
-    return mWorld->getWorldWalls();
+    mStateMachine.changeState(mWorld->getSheepState(newState));
 }

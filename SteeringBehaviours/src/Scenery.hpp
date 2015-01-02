@@ -1,51 +1,54 @@
 #ifndef SCENERY_HPP
 #define SCENERY_HPP
 
-#include <stdexcept>
 #include <memory>
 
-//#include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/Texture.hpp>
 
 #include "SceneNode.hpp"
-//#include "LevelBlock.hpp"
 
 class LevelBlock;
 
-class Scenery// : public SceneNode
+class Scenery
 {
 public:
-    //typedef std::unique_ptr<Obstacle> upObstacle;
+    typedef std::unique_ptr<Scenery> SceneryPtr;
 
-private:
-    const LevelBlock*       mHostBlock;
-    sf::Sprite              mSprite;
-    float                   mRadius;
-
-    //virtual void                updateCurrent(sf::Time){};
-    //virtual void                drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
-                                //{ target.draw(mCircle, states); }
+protected:
+    const LevelBlock*           mHostBlock;
+    sf::Sprite                  mSprite;
 
 public:
-
                                 Scenery(LevelBlock* host
-                                        , sf::Texture& texture
-                                        , float rad);
+                                        , const sf::Texture& texture)
+                                : mHostBlock(host)
+                                , mSprite(texture)
+                                {
+                                    sf::FloatRect bounds = mSprite.getLocalBounds();
+                                    mSprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
 
-                                Scenery(LevelBlock* host);
+                                    mSprite.move(20.f, 20.f);
+                                };
 
-
-//    virtual                     ~Scenery(){};
+    virtual                     ~Scenery(){};
 
     // Getters
-    float                       radius() const { return mRadius; }
-    const sf::Sprite&           getSprite() const { return mSprite; }
-    sf::Vector2f                getPosition() const;
-    sf::Vector2f                getWorldPosition() const;
+    virtual void                getSceneryData() const {};
+
+    const sf::Sprite&           getSprite()
+                                { return mSprite; }
 
     // Setters
-    void                        setPosition(float x, float y){ mSprite.setPosition(x, y); }
-    //void                        changeColour(sf::Color colour){ mCircle.setFillColor(colour); }
+    void                        rotateSprite(float angle)
+                                {
+//                                    sf::FloatRect bounds = mSprite.getLocalBounds();
+//                                    mSprite.setOrigin
+                                    mSprite.rotate(angle);
+
+                                }
 };
 
 #endif // SCENERY_HPP

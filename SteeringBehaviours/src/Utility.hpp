@@ -1,11 +1,17 @@
 #ifndef UTILITY_HPP
 #define UTILITY_HPP
 
+#include <limits>
+#include <string>
+
 #include <SFML/System/Vector2.hpp>
 
-float magVec(const sf::Vector2f vec);
+const float MAXFLOAT = (std::numeric_limits<float>::max)();
+const float MINFLOAT = (std::numeric_limits<float>::min)();
 
-sf::Vector2f normVec(const sf::Vector2f vec);
+float magVec(sf::Vector2f vec);
+
+sf::Vector2f normVec(sf::Vector2f vec);
 
 void truncateVec(sf::Vector2f& vec
                  , float maxSpeed);
@@ -17,6 +23,9 @@ float dotVec(const sf::Vector2f vec1
              , const sf::Vector2f vec2);
 
 float randomClamped();
+
+float rangedClamped(int
+                    , int);
 
 float rangedClamped(float
                     , float);
